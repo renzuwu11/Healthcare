@@ -1,0 +1,136 @@
+/* General Layout */
+.fms-container {
+    display: flex;
+    flex-direction: column; /* Switch to column layout */
+    height: 67vh; /* Full height of the viewport */
+}
+
+/* Tab Navigation */
+.tab-navigation {
+    display: flex;
+    justify-content: flex-start; /* Align tabs to the left */
+    border-bottom: 2px solid #ddd; /* Divider line below tabs */
+    margin-bottom: 20px;
+    background-color: #f3f4f6; /* Background color for tab area */
+}
+
+.tab-item {
+    padding: 10px 20px; /* Padding for tab buttons */
+    cursor: pointer;
+    background-color: #f3f4f6; /* Same color as tab area */
+    border: none;
+    border-bottom: 2px solid transparent; /* No border by default */
+    font-size: 16px;
+    color: #003b75; /* Text color */
+    transition: background-color 0.3s ease, border-bottom 0.3s ease;
+}
+
+.tab-item.active {
+    background-color: white; /* Active tab background */
+    border-bottom: 2px solid #003b75; /* Active tab border color */
+    color: #003b75; /* Active text color */
+    font-weight: bold;
+}
+
+.tab-item:hover {
+    background-color: #e0e0e0; /* Slight background change on hover */
+}
+
+/* Tab Content */
+.tab-content {
+    display: none; /* Hide all tab content by default */
+}
+
+.tab-content.active {
+    display: block; /* Show active tab content */
+}
+
+/* Main Content */ 
+.main-content {
+    background-color: white; /* White background for the main content */
+    border-radius: 10px; /* Rounded corners for the main content */
+    padding: 20px; /* Padding for main content */
+    width: 96%; /* Full width for column layout */
+    height: calc(100% - 40px); /* Adjust height to fit without scroll */
+    overflow: auto; /* Enable scrolling if content overflows */
+    margin-left: 24px;
+}
+
+/* Header */
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.new-user-btn {
+    background-color: #003b75;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.new-user-btn:hover {
+    background-color: #002d59;
+}
+
+/* Search Bar */
+.search-bar {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+/* Table Styles */
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.users-table th, .users-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.users-table th {
+    background-color: #f3f4f6;
+}
+
+.action-btn {
+    padding: 5px 10px;
+    margin: 0 5px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.view-btn {
+    background-color: #4253af;
+    color: white;
+}
+
+.edit-btn {
+    background-color: #003b75;
+    color: white;
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.action-btn:hover {
+    opacity: 0.8;
+}
