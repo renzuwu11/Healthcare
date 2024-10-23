@@ -162,7 +162,7 @@ def lms():
 @app.route('/logout', methods=['POST'])
 def logout():
     # Clear session or token handling logic here if necessary
-    return jsonify({"redirect": "https://healthcare-rflk.onrender.com/"}), 200
+    return jsonify({"redirect": "https://syncore.onrender.com"}), 200
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
