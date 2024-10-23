@@ -24,7 +24,10 @@
                 <div class="triangle"></div>
                 <div class="profile-dropdown-content">
                     <a href="#">Profile <img src="{{ url_for('static', filename='images/profile_icon.png') }}" alt="Profile Icon" class="dropdown-icon"></a>
-                    <a href="#">Logout<img src="{{ url_for('static', filename='images/logout_icon.png') }}" alt="Logout Icon" class="dropdown-icon"></a>
+                    <a href="#" id="logout-button">
+                        Logout
+                        <img src="{{ url_for('static', filename='images/logout_icon.png') }}" alt="Logout Icon" class="dropdown-icon">
+                    </a>
                 </div>
             </div>
         </div>

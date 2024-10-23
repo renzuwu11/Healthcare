@@ -1,27 +1,23 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 import psycopg2
-from dotenv import load_dotenv
 import os
 import requests
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
-load_dotenv()  # Load environment variables from .env file
-
+# Database connection setup
 def get_db_connection():
     try:
-        conn = psycopg2.connect(
-            host=os.getenv('DB_HOST'),
-            database=os.getenv('DB_NAME'),
-            user=os.getenv('DB_USER'),
-            password=os.getenv('DB_PASSWORD'),
-            port=os.getenv('DB_PORT')
+        connection = psycopg2.connect(
+            host="localhost",
+            user="postgres",
+            password="fms-group3",
+            database="authentication"
         )
-        return conn
+        return connection
     except Exception as e:
         print(f"Error connecting to the database: {e}")
-        flash("Database connection error.")
         return None
 
 # Define role access conditions
@@ -35,7 +31,7 @@ ROLE_ACCESS = {
     'PMS Admin': 'pms',
     'LMS Admin': 'lms',
     'Hospital Staff': 'lms',
-    'System Admin': 'admin-dashboard'
+    'System Admin': 'admin-dashboard'  # Ensure the system admin role is included
 }
 
 @app.route('/')
@@ -48,12 +44,13 @@ def admin_dashboard():
 
 @app.route('/login')
 def login():
+    # Prioritize the system from the query parameter, fall back on session value
     system = request.args.get('system') or session.get('requested_system')
     if system:
-        session['requested_system'] = system
-    return render_template('login.html', system=system)
+        session['requested_system'] = system  # Store system in session if it exists
+    return render_template('login.html', system=system)  # Pass system to login template
 
-@app.route('/login_post', methods=['POST'])
+@app.route('/login', methods=['POST'])
 def login_post():
     username = request.form['username']
     password = request.form['password']
@@ -67,6 +64,7 @@ def login_post():
     authcursor = authdb.cursor()
 
     try:
+        # Store the requested system in the session
         session['requested_system'] = system  # Store it in session
 
         # Check if the account is locked
@@ -77,8 +75,8 @@ def login_post():
             flash("Your account is locked. Please contact tech support.")
             return redirect(url_for('login', system=system))
 
-        # Perform authentication with deployed microservice
-        url = "https://authentication-microservice-3wvv.onrender.com/authenticate"
+        # Perform authentication
+        url = "http://localhost:10000/authenticate"  # Updated to port 10000
         data = {"username": username, "password": password}
         headers = {"Content-Type": "application/json"}
         response = requests.post(url, json=data, headers=headers)
@@ -86,7 +84,7 @@ def login_post():
         if response.status_code == 200:
             session['loginAttempts'] = 0
             token = response.json().get('token')
-            verify_url = "https://authentication-microservice-3wvv.onrender.com/verify-token"
+            verify_url = "http://localhost:10000/verify-token"  # Updated to port 10000
             verify_response = requests.post(verify_url, json={'token': token}, headers=headers)
 
             if verify_response.status_code == 200:
@@ -160,6 +158,11 @@ def pms():
 @app.route('/lms')
 def lms():
     return render_template('lms.html')
+
+@app.route('/logout', methods=['POST'])
+def logout():
+    # Clear session or token handling logic here if necessary
+    return jsonify({"redirect": "https://healthcare-rflk.onrender.com/"}), 200
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))

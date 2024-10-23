@@ -31,7 +31,7 @@
 <body>
     <div class="container">
         <!-- Back Button -->
-        <a href="javascript:history.back()" class="back-button"></a>  <!-- This back button redirects to the previous page -->
+        <a href="{{ url_for('index') }}" class="back-button"></a> <!-- This back button redirects to index.html -->
         
         <div class="left">
             <div class="logo">
@@ -75,5 +75,10 @@
     <footer>
         <p>SYNCORE v1<br>&copy; 2024</p>
     </footer>
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="circle-loader"></div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/login.js') }}"></script>
 </body>
 </html>
