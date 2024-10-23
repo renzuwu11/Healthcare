@@ -249,3 +249,41 @@ footer {
     100% { transform: rotate(360deg); }
 }
 
+/* Add styling for the back button with a fuller arrow */
+.back-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 28px;  /* Bigger size for more prominence */
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;  /* Make the arrow look fuller */
+}
+
+.back-button:hover {
+    color: #000;  /* Darker hover color */
+}
+
+/* Adding some smoothness on hover */
+.back-button::before {
+    content: "⬅";  /* Fuller left arrow */
+}        /* Add styling for the back button with a fuller arrow */
+.back-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 28px;  /* Bigger size for more prominence */
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;  /* Make the arrow look fuller */
+}
+
+.back-button:hover {
+    color: #000;  /* Darker hover color */
+}
+
+/* Adding some smoothness on hover */
+.back-button::before {
+    content: "⬅";  /* Fuller left arrow */
+}
+

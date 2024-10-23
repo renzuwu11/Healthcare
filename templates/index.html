@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Syncore Login</title>
-    <!-- Import Lato font from Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <link rel="stylesheet" href="css/index.css">
@@ -21,9 +20,9 @@
         <div class="right">
             <h2>Choose your destination.</h2>
             <div class="buttons">
-                <a href="https://hms-ui-gv0l.onrender.com/admin_med/layout/emergency_records.html" class="btn">Patient Management</a>
-                <a href="https://hospital-logistics.onrender.com" class="btn">Logistics Management</a>
-                <a href="https://finance-1qfw.onrender.com" class="btn">Finance Management</a>
+                <a href="{{ url_for('login', system='pms') }}" class="btn">Patient Management</a>
+                <a href="{{ url_for('login', system='lms') }}" class="btn">Logistics Management</a>
+                <a href="{{ url_for('login', system='fms') }}" class="btn">Finance Management</a>
                 <a href="{{ url_for('login') }}" class="btn">System Admin Control</a>
             </div>
         </div>
@@ -33,3 +32,10 @@
     </footer>
 </body>
 </html>
+
+            <!-- <div class="buttons">
+                <a href="https://hms-ui-gv0l.onrender.com/admin_med/layout/emergency_records.html" class="btn">Patient Management</a>
+                <a href="https://hospital-logistics.onrender.com" class="btn">Logistics Management</a>
+                <a href="https://finance-1qfw.onrender.com" class="btn">Finance Management</a>
+                <a href="{{ url_for('login') }}" class="btn">System Admin Control</a>
+            </div> -->
