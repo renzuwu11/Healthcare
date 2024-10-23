@@ -10,10 +10,10 @@ app.secret_key = os.urandom(24)
 def get_db_connection():
     try:
         connection = psycopg2.connect(
-            host="localhost",
-            user="postgres",
-            password="fms-group3",
-            database="authentication"
+            host=os.environ.get('DB_HOST', 'localhost'),  # Default to localhost if not set
+            user=os.environ.get('DB_USER', 'postgres'),  # Default to 'postgres' if not set
+            password=os.environ.get('DB_PASSWORD', 'fms-group3'),  # Default password (not recommended for production)
+            database=os.environ.get('DB_NAME', 'authentication')  # Default to 'authentication' if not set
         )
         return connection
     except Exception as e:
