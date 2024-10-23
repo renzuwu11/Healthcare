@@ -1,23 +1,27 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 import psycopg2
+from dotenv import load_dotenv
 import os
 import requests
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
-# Database connection setup
+load_dotenv()  # Load environment variables from .env file
+
 def get_db_connection():
     try:
-        connection = psycopg2.connect(
-            host=os.environ.get("DB_HOST"),  # e.g., "dpg-csc9dlo8fa8c73frtoa0-a"
-            user=os.environ.get("DB_USER"),  # e.g., "authentication_uctu_user"
-            password=os.environ.get("DB_PASSWORD"),  # e.g., "RLh4BZTR1hpckcfK82cZsjinkPQP0lr3"
-            database=os.environ.get("DB_NAME")  # e.g., "authentication_uctu"
+        conn = psycopg2.connect(
+            host=os.getenv('DB_HOST'),
+            database=os.getenv('DB_NAME'),
+            user=os.getenv('DB_USER'),
+            password=os.getenv('DB_PASSWORD'),
+            port=os.getenv('DB_PORT')
         )
-        return connection
+        return conn
     except Exception as e:
         print(f"Error connecting to the database: {e}")
+        flash("Database connection error.")
         return None
 
 # Define role access conditions
