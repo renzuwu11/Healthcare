@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 import psycopg2
 import os
 import requests
@@ -10,10 +10,10 @@ app.secret_key = os.urandom(24)
 def get_db_connection():
     try:
         connection = psycopg2.connect(
-            host="localhost",
-            user="postgres",
-            password="fms-group3",
-            database="authentication"
+            host=os.environ.get('DB_HOST', 'localhost'),  # Default to localhost if not set
+            user=os.environ.get('DB_USER', 'postgres'),  # Default to 'postgres' if not set
+            password=os.environ.get('DB_PASSWORD', 'fms-group3'),  # Default password (not recommended for production)
+            database=os.environ.get('DB_NAME', 'authentication')  # Default to 'authentication' if not set
         )
         return connection
     except Exception as e:
@@ -158,6 +158,11 @@ def pms():
 @app.route('/lms')
 def lms():
     return render_template('lms.html')
+
+@app.route('/logout', methods=['POST'])
+def logout():
+    # Clear session or token handling logic here if necessary
+    return jsonify({"redirect": "https://healthcare-rflk.onrender.com/"}), 200
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
