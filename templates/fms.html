@@ -38,26 +38,24 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Servas, Shane Steven</td>
-                    <td>Finance Manager</td>
-                    <td>Active</td>
-                    <td>
-                        <button class="action-btn view-btn">View</button>
-                        <button class="action-btn edit-btn">Edit</button>
-                        <button class="action-btn delete-btn">Delete</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Mendoza, Kyle</td>
-                    <td>Claims Specialist</td>
-                    <td>Inactive</td>
-                    <td>
-                        <button class="action-btn view-btn">View</button>
-                        <button class="action-btn edit-btn">Edit</button>
-                        <button class="action-btn delete-btn">Delete</button>
-                    </td>
-                </tr>
+                {% if users %}
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.role }}</td>
+                        <td>{{ user.status }}</td>
+                        <td>
+                            <button class="action-btn view-btn">View</button>
+                            <button class="action-btn edit-btn">Edit</button>
+                            <button class="action-btn delete-btn">Delete</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="4">No users available</td>
+                    </tr>
+                {% endif %}
             </tbody>
         </table>
     </div>

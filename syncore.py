@@ -10,15 +10,20 @@ app.secret_key = os.urandom(24)
 def get_db_connection():
     try:
         connection = psycopg2.connect(
-            host=os.environ.get('DB_HOST', 'localhost'),  # Default to localhost if not set
-            user=os.environ.get('DB_USER', 'postgres'),  # Default to 'postgres' if not set
-            password=os.environ.get('DB_PASSWORD', 'fms-group3'),  # Default password (not recommended for production)
-            database=os.environ.get('DB_NAME', 'authentication')  # Default to 'authentication' if not set
+            host=os.environ.get('DB_HOST', 'localhost'),
+            user=os.environ.get('DB_USER', 'postgres'),
+            password=os.environ.get('DB_PASSWORD', 'fms-group3'),
+            database=os.environ.get('DB_NAME', 'authentication')
         )
+        print("Database connection established successfully.")
         return connection
+    except psycopg2.OperationalError as e:
+        print(f"OperationalError: {e}")
+    except psycopg2.DatabaseError as e:
+        print(f"DatabaseError: {e}")
     except Exception as e:
-        print(f"Error connecting to the database: {e}")
-        return None
+        print(f"Unexpected error: {e}")
+    return None
 
 # Define role access conditions
 ROLE_ACCESS = {
@@ -149,7 +154,39 @@ def login_post():
 
 @app.route('/fms')
 def fms():
-    return render_template('fms.html')
+    authdb = get_db_connection()
+    if not authdb:
+        flash("Database connection error.")
+        return redirect(url_for('index'))
+
+    authcursor = authdb.cursor()
+    try:
+        # Fetch users with roles specific to FMS (Finance Manager, Billing Specialist, Claims Specialist)
+        query = """
+        SELECT u.username, a.roleName, u.accountLocked 
+        FROM USERS u
+        JOIN AUTHORIZATIONS a ON u.authorizationId = a.authorizationId
+        WHERE a.roleName IN ('Finance Manager', 'Billing Specialist', 'Claims Specialist')
+        """
+        authcursor.execute(query)
+        users = authcursor.fetchall()  # Get the filtered users
+
+        # Format the data as a list of dictionaries
+        users_data = []
+        for user in users:
+            users_data.append({
+                'username': user[0],
+                'role': user[1],
+                'status': 'Active' if not user[2] else 'Inactive'
+            })
+
+        return render_template('fms.html', users=users_data)
+    except Exception as e:
+        flash(f'An error occurred: {e}')
+        return redirect(url_for('index'))
+    finally:
+        authcursor.close()
+        authdb.close()
 
 @app.route('/pms')
 def pms():
