@@ -1,40 +1,46 @@
 /* General styles */
 html, body {
-    height: 100%; /* Ensure the html and body are full height */
-    margin: 0; /* Remove default margin */
-    padding: 0; /* Remove default padding */
-    overflow: hidden; /* Prevent scrollbars */
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: auto; /* Allow scrolling */
 }
 
 body {
     font-family: 'Lato', sans-serif;
     background-color: #f1f4fa;
+    opacity: 0; /* Start with transparent */
+    transition: opacity 0.6s ease; /* Only transition opacity */
+}
+
+.fade-in {
+    opacity: 1; /* Fully visible */
 }
 
 .container {
     display: flex;
-    width: 100vw; /* Use viewport width */
-    height: 100vh; /* Use viewport height */
+    width: 100vw;
+    height: 100vh;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: filter 0.6s ease, opacity 0.6s ease;
 }
 
 .left, .right {
-    flex: 1; /* Each side takes up equal space */
+    flex: 1;
     display: flex;
-    flex-direction: column; /* Stack elements vertically */
-    justify-content: center; /* Center content vertically */
-    align-items: center; /* Center content horizontally */
-    height: 100%; /* Ensure full height */
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    box-sizing: border-box;
 }
 
 .left {
     background-color: #012d74;
     color: white;
-    padding: 10px 40px 40px 40px; /* Adjust top padding to 20px (or any smaller value) */
+    padding: 10px 40px 40px 40px;
     text-align: center;
 }
-
 
 .left .logo h1 {
     font-size: 36px;
@@ -46,8 +52,8 @@ body {
 }
 
 .logo-img {
-    width: 250px; /* Adjust this value as needed */
-    height: auto; /* Auto adjusts height based on width to maintain aspect ratio */
+    width: 250px;
+    height: auto;
     padding-bottom: 0px;
 }
 
@@ -66,7 +72,7 @@ body {
 .right .buttons {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center the buttons horizontally */
+    align-items: center;
     gap: 15px;
 }
 
@@ -80,10 +86,9 @@ body {
     border-radius: 30px;
     transition: background-color 0.3s ease;
     font-size: 18px;
-    width: 100%; /* Make buttons full-width */
-    max-width: 300px; /* Set a max-width to keep the buttons from being too wide */
+    width: 100%;
+    max-width: 300px;
 }
-
 
 .right .btn:hover {
     background-color: #003c82;
@@ -99,18 +104,8 @@ footer {
     color: #999;
 }
 
-/* Container styling */
-.container {
-    transition: filter 0.6s ease, opacity 0.6s ease;
-}
-
 /* Blur-out animation */
 .blur-out {
-    filter: blur(10px);  /* Adjust the blur amount as desired */
+    filter: blur(10px);
     opacity: 0;
-}
-
-.fade-in {
-    filter: blur(0);
-    opacity: 1;
 }
