@@ -1,97 +1,18 @@
 {% extends "base.html" %}
 
-{% block title %}Patient Management System{% endblock %}
-{% block header_title %}Patient Management System{% endblock %}
+{% block title %}Finance Management System{% endblock %}
+{% block header_title %}Finance Management System{% endblock %}
 
 {% block additional_css %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/fms.css') }}">
 {% endblock %}
 
 {% block content %}
-<div class="fms-container">
-
-    <!-- Tab Navigation -->
-    <div class="tab-navigation">
-        <button class="tab-item active" onclick="showTabContent('users')">Users</button>
-        <button class="tab-item" onclick="showTabContent('employees')">Employees</button>
-        <button class="tab-item" onclick="showTabContent('services')">Services</button>
-    </div>
-
-    <!-- Tab Content Containers -->
-    <div class="tab-content" id="users">
-        <div class="content-header">
-            <h2>Users</h2>
-            <button class="new-user-btn">+ New User</button>
-        </div>
-
-        <div class="search-bar">
-            <input type="text" placeholder="Search">
-        </div>
-
-        <table class="users-table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Role</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% if users %}
-                    {% for user in users %}
-                    <tr>
-                        <td>{{ user.username }}</td>
-                        <td>{{ user.role }}</td>
-                        <td>{{ user.status }}</td>
-                        <td>
-                            <button class="action-btn view-btn">View</button>
-                            <button class="action-btn edit-btn">Edit</button>
-                            <button class="action-btn delete-btn">Delete</button>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                {% else %}
-                    <tr>
-                        <td colspan="4">No users available</td>
-                    </tr>
-                {% endif %}
-            </tbody>
-        </table>
-    </div>
-
-    <div class="tab-content" id="employees" style="display: none;">
-        <div class="content-header">
-            <h2>Employees</h2>
-            <!-- Add content specific to Employees tab -->
-        </div>
-    </div>
-
-    <div class="tab-content" id="services" style="display: none;">
-        <div class="content-header">
-            <h2>Services</h2>
-            <!-- Add content specific to Services tab -->
-        </div>
-    </div>
+<div class="fms-content">
 
 </div>
 {% endblock %}
 
 {% block scripts %}
-<script>
-// Handle Tab Switching
-function showTabContent(tabId) {
-    const tabs = document.querySelectorAll('.tab-item');
-    const contents = document.querySelectorAll('.tab-content');
-
-    // Deactivate all tabs and hide all content containers
-    tabs.forEach(tab => tab.classList.remove('active'));
-    contents.forEach(content => content.style.display = 'none');
-
-    // Activate the selected tab and show the corresponding content container
-    document.querySelector(`[onclick="showTabContent('${tabId}')"]`).classList.add('active');
-    document.getElementById(tabId).style.display = 'block';
-}
-
-</script>
+<script src="{{ url_for('static', filename='js/fms.js') }}"></script>
 {% endblock %}
