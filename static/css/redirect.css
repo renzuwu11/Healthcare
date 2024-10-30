@@ -109,3 +109,8 @@ footer {
     filter: blur(10px);  /* Adjust the blur amount as desired */
     opacity: 0;
 }
+
+.fade-in {
+    filter: blur(0);
+    opacity: 1;
+}
