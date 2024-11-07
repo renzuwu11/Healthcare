@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
-import psycopg2
+import psycopg2, requests
 import os
 
 app = Flask(__name__)
@@ -29,6 +29,80 @@ def get_db_connection():
 def index():
     return render_template('redirect.html')
 
+@app.route('/login', methods=['GET'])
+def login():
+    return render_template('login.html')
+
+@app.route('/forgot-password')
+def forgot_pass():
+    return render_template('forgot_pass.html')
+
+@app.route('/tech-support')
+def tech_support():
+    return render_template('tech_support.html')
+
+@app.route('/login', methods=['POST'])
+def login_post():
+    username = request.form['username']
+    password = request.form['password']
+
+    # Use the deployed authentication microservice URL
+    url = "https://authentication-microservice-1-ux4a.onrender.com/authenticate"
+    data = {
+        "username": username,
+        "password": password,
+    }
+    headers = {
+        "Content-Type": "application/json",
+    }
+
+    # Check if the account is locked
+    account_locked_response = requests.get(f"https://authentication-microservice-1-ux4a.onrender.com/checkAccountLocked/{username}")
+    if account_locked_response.status_code == 200 and account_locked_response.json().get("locked"):
+        flash("Your account is now locked, please contact tech support.")
+        return redirect(url_for('login'))
+
+    # Authenticate user
+    response = requests.post(url, json=data, headers=headers)
+
+    if response.status_code == 200:
+        session['loginAttempts'] = 0
+        token = response.json().get('token')
+
+        # Verify token
+        verify_url = "https://authentication-microservice-1-ux4a.onrender.com/verify-token"
+        verify_response = requests.post(verify_url, json={'token': token}, headers=headers)
+
+        if verify_response.status_code == 200:
+            user_data = verify_response.json()
+            session['username'] = user_data['username']
+            session['role'] = user_data['role']
+            return redirect(url_for('admin_dashboard'))
+        else:
+            flash('Token verification failed.')
+            return redirect(url_for('login'))
+
+    elif response.status_code == 401:
+        if 'loginAttempts' not in session:
+            session['loginAttempts'] = 0
+        session['loginAttempts'] += 1
+
+        if session['loginAttempts'] >= 3:
+            flash("Invalid credentials. You have made 3 unsuccessful attempts. Your account is now locked. Please contact tech support.")
+            requests.post("https://authentication-microservice-1-ux4a.onrender.com/accountLocked", json={"username": username}, headers=headers)
+        else:
+            flash('Invalid credentials. Your account will be locked after multiple unsuccessful attempts.')
+
+        return redirect(url_for('login'))
+
+    elif response.status_code in [400, 403]:
+        flash('Invalid credentials or access denied. Please check your username and password.')
+        return redirect(url_for('login'))
+
+    else:
+        flash(f'Unexpected error occurred: {response.status_code}. Please try again later or contact tech support.')
+        return redirect(url_for('login'))
+    
 @app.route('/admin-dashboard')
 def admin_dashboard():
     return render_template('admin_dashboard.html')

@@ -19,10 +19,10 @@
         <div class="right">
             <h2>Choose your destination.</h2>
             <div class="buttons">
-                <a class="btn" onclick="animatePageAndRedirect('https://authentication-microservice-1-ux4a.onrender.com')">Patient Management</a>
-                <a class="btn" onclick="animatePageAndRedirect('https://authentication-microservice-1-ux4a.onrender.com')">Logistics Management</a>
-                <a class="btn" onclick="animatePageAndRedirect('https://authentication-microservice-1-ux4a.onrender.com')">Finance Management</a>
-                <a class="btn" onclick="animatePageAndRedirect('https://authentication-microservice-1-ux4a.onrender.com')">Medical Director</a>
+                <a class="btn" onclick="animatePageAndRedirect('https://authentication-microservice-3wvv.onrender.com')">Patient Management</a>
+                <a class="btn" onclick="animatePageAndRedirect('https://authentication-microservice-3wvv.onrender.com')">Logistics Management</a>
+                <a class="btn" onclick="animatePageAndRedirect('https://authentication-microservice-3wvv.onrender.com')">Finance Management</a>
+                <a class="btn" href="{{ url_for('login') }}">Medical Director</a>
             </div>
         </div>
     </div>
@@ -31,6 +31,7 @@
     </footer>
 
     <script>
+        // Optionally, you can keep the animation, though it's no longer needed for redirecting directly to the login.
         function animatePageAndRedirect(url) {
             document.querySelector('.container').classList.add('blur-out');
             setTimeout(() => {
