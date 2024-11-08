@@ -33,7 +33,7 @@ def get_db_connection():
 # Redirect users to the authentication microservice login page
 @app.route('/login')
 def login_page():
-    auth_url = 'https://authentication-microservice-3wvv.onrender.com'
+    auth_url = 'https://authentication-microservice-1-ux4a.onrender.com'
     print(f"Redirecting to authentication service: {auth_url}")  # Debugging log
     return redirect(auth_url)
 
@@ -51,7 +51,7 @@ def auth_callback():
         print(f"Token stored in session: {session['token']}")  # Debugging log
         
         # Now fetch the user details (e.g., username, role) from the token or through another API call
-        user_data_url = f'https://authentication-microservice-3wvv.onrender.com/user/{token}'
+        user_data_url = f'https://authentication-microservice-1-ux4a.onrender.com/user/{token}'
         print(f"Fetching user data from: {user_data_url}")  # Debugging log
         response = requests.get(user_data_url)
         
