@@ -16,9 +16,9 @@
         </div>
         <div class="user-profile">
             <div class="user-info">
-                <p>{{ user_name }}</p> 
-                <span>{{ user_role }}</span> 
-            </div>                 
+                <p>{{ username }}</p>
+                <span>{{ role }}</span>
+            </div>                
             <div class="user-dropdown">
                 <img src="{{ url_for('static', filename='images/user_icon.png') }}" alt="User Icon">
                 <div class="triangle"></div>
@@ -49,7 +49,7 @@
                     <div class="submenu">
                         <a href="#">Records</a>
                         <div class="submenu-content">
-                            <a href="https://hms-ui-gv0l.onrender.com/admin_med/layout/emergency_records.html">Emergency Patients</a>
+                            <a href="{{ url_for('emergency_patients') }}">Emergency Patients</a>
                             <a href="https://hms-ui-gv0l.onrender.com/admin_med/layout/inpatient.html">In-Patients</a>
                             <a href="#">Out-Patients</a> <!-- Placeholder link with no target yet -->
                         </div>
@@ -69,43 +69,42 @@
             <div class="dropdown">
                 <a href="#" class="dropbtn">Logistics Management</a>
                 <div class="dropdown-content">
-                    <a href="https://hospital-logistics-15.onrender.com/admin_dashboard">Dashboard</a>
-                    <a href="https://hospital-logistics-15.onrender.com/suppliers">Supplier</a>
-                    <a href="https://hospital-logistics-15.onrender.com/admin_requisition">Requisition</a>
-                    <a href="https://hospital-logistics-15.onrender.com/purchase_order">Purchase Order</a>
-                    <a href="https://hospital-logistics-15.onrender.com/inventory">Inventory</a>
-                    <a href="https://hospital-logistics-15.onrender.com/signatory_view">Signatory</a>
+                    <a href="{{ url_for('lms_dashboard') }}">Dashboard</a>
+                    <a href="{{ url_for('lms_suppliers') }}">Supplier</a>
+                    <a href="{{ url_for('lms_requisition') }}">Requisition</a>
+                    <a href="{{ url_for('lms_purchase_order') }}">Purchase Order</a>
+                    <a href="{{ url_for('lms_inventory') }}">Inventory</a>
+                    <a href="{{ url_for('lms_signatory') }}">Signatory</a>
                 </div>
             </div>
 
-            <!-- Finance Management with dropdown -->
+            <!-- Finance Management with Dropdown -->
             <div class="dropdown">
                 <a href="#" class="dropbtn">Finance Management</a>
                 <div class="dropdown-content">
-                    <a href="https://syncore-finance-management-system.onrender.com/dashboard_finance_manager">Finance Manager Dashboard</a>
-
-                    <!-- Employees Section -->
+                    
+                    <!-- Dashboards Section -->
                     <div class="submenu">
-                        <a href="#">Employees</a>
+                        <a href="#">Dashboard</a>
                         <div class="submenu-content">
-                            <a href="https://syncore-finance-management-system.onrender.com/employee">Employees List</a>
+                            <a href="{{ url_for('fms_dashboard_finance_manager') }}">Finance Manager</a>
+                            <a href="{{ url_for('fms_dashboard_billing_specialist') }}">Billing Specialist</a>
+                            <a href="{{ url_for('fms_dashboard_claims_specialist') }}">Claims Specialist</a>
                         </div>
                     </div>
 
-                    <!-- Services Section -->
-                    <div class="submenu">
-                        <a href="#">Services</a>
-                        <div class="submenu-content">
-                            <a href="https://syncore-finance-management-system.onrender.com/services">Services List</a>
-                        </div>
-                    </div>
+                    <!-- Employees Section (Single link, no submenu) -->
+                    <a href="{{ url_for('fms_employees') }}">Employees</a>
+
+                    <!-- Services Section (Single link, no submenu) -->
+                    <a href="{{ url_for('fms_services') }}">Services</a>
 
                     <!-- Wards Section -->
                     <div class="submenu">
                         <a href="#">Wards</a>
                         <div class="submenu-content">
-                            <a href="https://syncore-finance-management-system.onrender.com/medical-ward">Medical Ward</a>
-                            <a href="https://syncore-finance-management-system.onrender.com/radiology">Radiology Ward</a>
+                            <a href="{{ url_for('fms_medical_ward') }}">Medical Ward</a>
+                            <a href="{{ url_for('fms_radiology_ward') }}">Radiology Ward</a>
                         </div>
                     </div>
 
@@ -113,8 +112,8 @@
                     <div class="submenu">
                         <a href="#">Patients</a>
                         <div class="submenu-content">
-                            <a href="https://syncore-finance-management-system.onrender.com/hospital_patients">Hospital Patients</a>
-                            <a href="https://syncore-finance-management-system.onrender.com/external_customers">External Customers</a>
+                            <a href="{{ url_for('fms_hospital_patients') }}">Hospital Patients</a>
+                            <a href="{{ url_for('fms_external_customers') }}">External Customers</a>
                         </div>
                     </div>
 
@@ -122,9 +121,9 @@
                     <div class="submenu">
                         <a href="#">Invoices</a>
                         <div class="submenu-content">
-                            <a href="https://syncore-finance-management-system.onrender.com/invoice_management">Invoice Management</a>
+                            <a href="{{ url_for('fms_invoice_management') }}">Invoice Management</a>
                             <a href="#">Search (no link yet)</a>
-                            <a href="https://syncore-finance-management-system.onrender.com/submitted_invoices">Submitted Invoices</a>
+                            <a href="{{ url_for('fms_submitted_invoices') }}">Submitted Invoices</a>
                         </div>
                     </div>
 
@@ -132,13 +131,14 @@
                     <div class="submenu">
                         <a href="#">Insurance</a>
                         <div class="submenu-content">
-                            <a href="https://syncore-finance-management-system.onrender.com/insurance">Claims Management</a>
+                            <a href="{{ url_for('fms_claims_management') }}">Claims Management</a>
                             <a href="#">Search (no link yet)</a>
-                            <a href="https://syncore-finance-management-system.onrender.com/insurance-provider">Insurance Providers</a>
+                            <a href="{{ url_for('fms_insurance_providers') }}">Insurance Providers</a>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 

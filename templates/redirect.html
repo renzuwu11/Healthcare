@@ -19,10 +19,12 @@
         <div class="right">
             <h2>Choose your destination.</h2>
             <div class="buttons">
-                <a class="btn" onclick="animatePageAndRedirect('https://authentication-microservice-1-ux4a.onrender.com')">Patient Management</a>
-                <a class="btn" onclick="animatePageAndRedirect('https://authentication-microservice-1-ux4a.onrender.com')">Logistics Management</a>
-                <a class="btn" onclick="animatePageAndRedirect('https://syncore-finance-management-system.onrender.com/')">Finance Management</a>
-                <a class="btn" onclick="animatePageAndRedirect('https://authentication-microservice-1-ux4a.onrender.com')">Medical Director</a>
+                <!-- Redirect all buttons to the login page first -->
+                <a class="btn" href="{{ url_for('login') }}">Patient Management</a>
+                <a class="btn" href="{{ url_for('login') }}">Logistics Management</a>
+                <!-- Keep Finance Management URL as is -->
+                <a class="btn" href="https://syncore-finance-management-system.onrender.com/">Finance Management</a>
+                <a class="btn" href="{{ url_for('login') }}">Medical Director</a>
             </div>
         </div>
     </div>
@@ -31,13 +33,6 @@
     </footer>
 
     <script>
-        function animatePageAndRedirect(url) {
-            document.querySelector('.container').classList.add('blur-out');
-            setTimeout(() => {
-                window.location.href = url;
-            }, 600); // Adjust delay to match animation duration
-        }
-
         window.onload = function() {
             document.body.classList.add('fade-in');
         };

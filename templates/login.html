@@ -6,8 +6,10 @@
     <title>SYNCORE Login</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+    <!-- Header Section -->
     <div class="header">
         <div class="logo">
             <img src="{{ url_for('static', filename='images/Company_Logo.png') }}" alt="Syncore Logo">
@@ -21,45 +23,53 @@
             <p><a href="mailto:info@maclanghospital.com">info@sanmateodoctors.com</a></p>
         </div>
     </div>
+        
+    <!-- Login Box Section -->
+    <div class="container">
+        <div class="login-box">
+            <!-- Check for and display flash messages -->
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="flash-message">
+                        {% for message in messages %}
+                            <p>{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
     
-    <div class="login-box">
-        <!-- Check for and display flash messages -->
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <div class="flash-message">
-                    {% for message in messages %}
-                        <p>{{ message }}</p>
-                    {% endfor %}
+            <h2>Login to your SYNCORE account.</h2>
+            <form id="loginForm" action="{{ url_for('login_post') }}" method="POST">
+                <input type="text" placeholder="Username" required id="username" name="username">
+                <div class="password-container">
+                    <input type="password" placeholder="Password" required id="password" name="password">
+                    <span id="togglePassword" class="toggle-password">👁️</span>
                 </div>
-            {% endif %}
-        {% endwith %}
-
-        <h2>Login to your SYNCORE account.</h2>
-        <form id="loginForm" action="{{ url_for('login_post') }}" method="POST">
-            <input type="text" placeholder="Username" required id="username" name="username">
-            <div class="password-container">
-                <input type="password" placeholder="Password" required id="password" name="password">
-                <span id="togglePassword" class="toggle-password">👁️</span>
+                <button type="submit">Login</button>
+            </form>
+            <p class="forgot-password"><a href="{{ url_for('forgot_pass') }}">Forgot Password</a></p>
+            <div class="links">
+                <p style="color: black;">Need help?</p>
+                <p><a href="{{ url_for('tech_support') }}">Contact tech support <span class="blue-hover">here</span>.</a></p>
             </div>
-            <button type="submit">Login</button>
-        </form>
-        <p class="forgot-password"><a href="{{ url_for('forgot_pass') }}">Forgot Password</a></p>
-        <div class="links">
-            <p style="color: black;">Need help?</p>
-            <p><a href="{{ url_for('tech_support') }}">Contact tech support <span class="blue-hover">here</span>.</a></p>
         </div>
-    </div>
-    
-    <div class="footer">
-        <p>SYNCORE v1<br>Copyright &copy; 2024</p>
-    </div>
+        
+        <!-- Footer Section -->
+        <div class="footer">
+            <p>SYNCORE v1<br>Copyright &copy; 2024</p>
+        </div>
+        <!-- Home Icon Button -->
+        <a class="back-button" onclick="animatePageAndRedirect('https://syncore.onrender.com')">
+            <i class="fas fa-home"></i>
+        </a>
+    </div> <!-- End of Container -->
 
     <!--- Loading Overlay  --->
 
     <div id="loadingOverlay" class="loading-overlay">
         <div class="circle-loader"></div>
     </div>
-
+    <!-- External JS -->
     <script src="{{ url_for('static', filename='js/login.js') }}"></script>
 </body>
 </html>
