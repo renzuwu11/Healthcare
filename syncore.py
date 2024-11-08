@@ -1,13 +1,18 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
+from flask import Flask, render_template, redirect, session, url_for, flash, request
 import psycopg2, requests
 import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24)
+app.secret_key = os.getenv("SECRET_KEY")
 
 # Database connection function
-def get_db_connection():
+def authdb():
     try:
+        # Attempt to connect to the database
         authdb = psycopg2.connect(
             host=os.getenv("AUTH_DB_HOST"),
             user=os.getenv("AUTH_DB_USER"),
@@ -15,31 +20,25 @@ def get_db_connection():
             dbname=os.getenv("AUTH_DB_NAME"),
             sslmode='require'
         )
-        print("Database connection established successfully.")
-        return authdb
+        auth_cursor = authdb.cursor()
+        print("Successfully connected to the authentication database.")
+        return authdb, auth_cursor  # Return both the connection and cursor
     except psycopg2.OperationalError as e:
+        # Handle operational errors like connection issues
         print(f"OperationalError: {e}")
-    except psycopg2.DatabaseError as e:
-        print(f"DatabaseError: {e}")
-    except Exception as e:
-        print(f"Unexpected error: {e}")
-    return None
+        return None, None
+    except psycopg2.InterfaceError as e:
+        # Handle interface errors like configuration issues
+        print(f"InterfaceError: {e}")
+        return None, None
+    except psycopg2.Error as e:
+        # General error handler for any other psycopg2 errors
+        print(f"Error connecting to the authentication database: {e}")
+        return None, None
 
 @app.route('/')
-def index():
-    return render_template('redirect.html')
-
-@app.route('/login', methods=['GET'])
 def login():
     return render_template('login.html')
-
-@app.route('/forgot-password')
-def forgot_pass():
-    return render_template('forgot_pass.html')
-
-@app.route('/tech-support')
-def tech_support():
-    return render_template('tech_support.html')
 
 @app.route('/login', methods=['POST'])
 def login_post():
@@ -77,7 +76,7 @@ def login_post():
             user_data = verify_response.json()
             session['username'] = user_data['username']
             session['role'] = user_data['role']
-            return redirect(url_for('admin_dashboard'))
+            return redirect(url_for('dash_finance'))
         else:
             flash('Token verification failed.')
             return redirect(url_for('login'))
@@ -102,54 +101,54 @@ def login_post():
     else:
         flash(f'Unexpected error occurred: {response.status_code}. Please try again later or contact tech support.')
         return redirect(url_for('login'))
-    
+
 @app.route('/admin-dashboard')
 def admin_dashboard():
+    # Ensure the user is logged in by checking for the token in the session
+    if 'token' not in session:
+        print("No token found in session.")  # Debugging
+        flash('You do not have access to this page. Please log in.', 'warning')
+        return redirect(url_for('login_page'))
+    
+    print("Token found in session, granting access.")  # Debugging
     return render_template('admin_dashboard.html')
 
 @app.route('/fms')
 def fms():
-    authdb = get_db_connection()
-    if not authdb:
-        flash("Database connection error.")
-        return redirect(url_for('index'))
-
-    authcursor = authdb.cursor()
-    try:
-        # Fetch users with roles specific to FMS (Finance Manager, Billing Specialist, Claims Specialist)
-        query = """
-        SELECT u.username, a.roleName, u.accountLocked 
-        FROM USERS u
-        JOIN AUTHORIZATIONS a ON u.authorizationId = a.authorizationId
-        WHERE a.roleName IN ('Finance Manager', 'Billing Specialist', 'Claims Specialist')
-        """
-        authcursor.execute(query)
-        users = authcursor.fetchall()  # Get the filtered users
-
-        # Format the data as a list of dictionaries
-        users_data = []
-        for user in users:
-            users_data.append({
-                'username': user[0],
-                'role': user[1],
-                'status': 'Active' if not user[2] else 'Inactive'
-            })
-
-        return render_template('fms.html', users=users_data)
-    except Exception as e:
-        flash(f'An error occurred: {e}')
-        return redirect(url_for('redirect'))
-    finally:
-        authcursor.close()
-        authdb.close()
+    # Ensure user is logged in and has the appropriate role
+    if 'username' not in session or session.get('role') not in ['Finance Manager', 'Billing Specialist', 'Claims Specialist']:
+        flash('You do not have access to this page.', 'warning')
+        return redirect(url_for('login_page'))
+    return render_template('fms.html', username=session.get('username'), role=session.get('role'))
 
 @app.route('/pms')
 def pms():
-    return render_template('pms.html')
+    # Ensure user is logged in and has the appropriate role
+    if 'username' not in session or session.get('role') != 'PMS Admin':
+        flash('You do not have access to this page.', 'warning')
+        return redirect(url_for('login_page'))
+    return render_template('pms.html', username=session.get('username'), role=session.get('role'))
 
 @app.route('/lms')
 def lms():
-    return render_template('lms.html')
+    # Ensure user is logged in and has the appropriate role
+    if 'username' not in session or session.get('role') != 'LMS Admin':
+        flash('You do not have access to this page.', 'warning')
+        return redirect(url_for('login_page'))
+    return render_template('lms.html', username=session.get('username'), role=session.get('role'))
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    session.pop('role', None)
+    session.pop('token', None)
+    flash('You have been logged out.', 'info')
+    return redirect(url_for('login_page'))
+
+@app.route('/')
+def index():
+    # Redirect to the landing page with buttons
+    return render_template('redirect.html')
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 3000))

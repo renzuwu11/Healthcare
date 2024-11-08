@@ -16,9 +16,9 @@
         </div>
         <div class="user-profile">
             <div class="user-info">
-                <p>PUP QC</p>
-                <span>Admin</span>
-            </div>            
+                <p>{{ user_name }}</p> 
+                <span>{{ user_role }}</span> 
+            </div>                 
             <div class="user-dropdown">
                 <img src="{{ url_for('static', filename='images/user_icon.png') }}" alt="User Icon">
                 <div class="triangle"></div>
@@ -35,20 +35,121 @@
 
     <div class="top-bar">
         <div class="top-nav">
+            <!-- The following sections will always be visible for the System Admin -->
             <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
-            <a href="{{ url_for('pms') }}">Patient Management</a>
-            <a href="{{ url_for('lms') }}">Logistics Management</a>
-            <a href="{{ url_for('fms') }}">Finance Management</a>
-        </div>
-    </div>
-    
-        <!-- Main Content Area -->
-        <div class="main-content">
-            <div class="content">
-                {% block content %}{% endblock %}
+
+            <!-- Patient Management with dropdown -->
+            <div class="dropdown">
+                <a href="#" class="dropbtn">Patient Management</a>
+                <div class="dropdown-content">
+                    <a href="#">Home</a>
+                    <a href="#">Calendar</a>
+
+                    <!-- Records Section -->
+                    <div class="submenu">
+                        <a href="#">Records</a>
+                        <div class="submenu-content">
+                            <a href="https://hms-ui-gv0l.onrender.com/admin_med/layout/emergency_records.html">Emergency Patients</a>
+                            <a href="https://hms-ui-gv0l.onrender.com/admin_med/layout/inpatient.html">In-Patients</a>
+                            <a href="#">Out-Patients</a> <!-- Placeholder link with no target yet -->
+                        </div>
+                    </div>
+
+                    <!-- Transactions Section -->
+                    <div class="submenu">
+                        <a href="#">Transactions</a>
+                        <div class="submenu-content">
+                            <a href="#">(No Link Yet)</a> <!-- Placeholder link -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Logistics Management with dropdown -->
+            <div class="dropdown">
+                <a href="#" class="dropbtn">Logistics Management</a>
+                <div class="dropdown-content">
+                    <a href="https://hospital-logistics-15.onrender.com/admin_dashboard">Dashboard</a>
+                    <a href="https://hospital-logistics-15.onrender.com/suppliers">Supplier</a>
+                    <a href="https://hospital-logistics-15.onrender.com/admin_requisition">Requisition</a>
+                    <a href="https://hospital-logistics-15.onrender.com/purchase_order">Purchase Order</a>
+                    <a href="https://hospital-logistics-15.onrender.com/inventory">Inventory</a>
+                    <a href="https://hospital-logistics-15.onrender.com/signatory_view">Signatory</a>
+                </div>
+            </div>
+
+            <!-- Finance Management with dropdown -->
+            <div class="dropdown">
+                <a href="#" class="dropbtn">Finance Management</a>
+                <div class="dropdown-content">
+                    <a href="https://syncore-finance-management-system.onrender.com/dashboard_finance_manager">Finance Manager Dashboard</a>
+
+                    <!-- Employees Section -->
+                    <div class="submenu">
+                        <a href="#">Employees</a>
+                        <div class="submenu-content">
+                            <a href="https://syncore-finance-management-system.onrender.com/employee">Employees List</a>
+                        </div>
+                    </div>
+
+                    <!-- Services Section -->
+                    <div class="submenu">
+                        <a href="#">Services</a>
+                        <div class="submenu-content">
+                            <a href="https://syncore-finance-management-system.onrender.com/services">Services List</a>
+                        </div>
+                    </div>
+
+                    <!-- Wards Section -->
+                    <div class="submenu">
+                        <a href="#">Wards</a>
+                        <div class="submenu-content">
+                            <a href="https://syncore-finance-management-system.onrender.com/medical-ward">Medical Ward</a>
+                            <a href="https://syncore-finance-management-system.onrender.com/radiology">Radiology Ward</a>
+                        </div>
+                    </div>
+
+                    <!-- Patients Section -->
+                    <div class="submenu">
+                        <a href="#">Patients</a>
+                        <div class="submenu-content">
+                            <a href="https://syncore-finance-management-system.onrender.com/hospital_patients">Hospital Patients</a>
+                            <a href="https://syncore-finance-management-system.onrender.com/external_customers">External Customers</a>
+                        </div>
+                    </div>
+
+                    <!-- Invoices Section -->
+                    <div class="submenu">
+                        <a href="#">Invoices</a>
+                        <div class="submenu-content">
+                            <a href="https://syncore-finance-management-system.onrender.com/invoice_management">Invoice Management</a>
+                            <a href="#">Search (no link yet)</a>
+                            <a href="https://syncore-finance-management-system.onrender.com/submitted_invoices">Submitted Invoices</a>
+                        </div>
+                    </div>
+
+                    <!-- Insurance Section -->
+                    <div class="submenu">
+                        <a href="#">Insurance</a>
+                        <div class="submenu-content">
+                            <a href="https://syncore-finance-management-system.onrender.com/insurance">Claims Management</a>
+                            <a href="#">Search (no link yet)</a>
+                            <a href="https://syncore-finance-management-system.onrender.com/insurance-provider">Insurance Providers</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <script src="{{ url_for('static', filename='js/base.js') }}"></script>
-        {% block scripts %}{% endblock %}
-    </body>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <div class="content">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/base.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
 </html>
